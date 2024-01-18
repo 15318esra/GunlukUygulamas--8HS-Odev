@@ -78,5 +78,27 @@ namespace Günlük_Uygulaması.Controller
 
             return affectedRows > 0;
         }
+        public static bool Update(Gunluk gunluk)
+        {
+            SqlConnection conn = Db.Conn();
+            SqlCommand cmd = new SqlCommand("UPDATE Gunlukler SET Name=@name WHERE Id=@id", conn);
+            cmd.Parameters.AddWithValue("id", gunluk.Id);
+            cmd.Parameters.AddWithValue("name", gunluk.Name);
+
+            conn.Open();
+            int affectedRows = cmd.ExecuteNonQuery();
+            conn.Close();
+            return affectedRows > 0;
+        }
+        public static bool RemoveById(int id)
+        {
+            SqlConnection conn = Db.Conn();
+            SqlCommand cmd = new SqlCommand("DELETE FROM Gunlukler WHERE Id = @id ", conn);
+            cmd.Parameters.AddWithValue("id", id);
+            conn.Open();
+            int affectedRows = cmd.ExecuteNonQuery();
+            conn.Close();
+            return affectedRows > 0;
+        }
     }
 }

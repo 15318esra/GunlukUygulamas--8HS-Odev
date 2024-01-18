@@ -81,23 +81,56 @@ namespace Günlük_Uygulaması
 
                     Console.WriteLine($"{g.DateCreated.ToString("dd MMMM yyyy")}\n {g.Name}"
                         + "\n-------------");// 
-                    Console.WriteLine("(s)onraki kayıt | (a)na menü");
+                    Console.WriteLine("(s)onraki kayıt | (d)üzenle | (si)l (a)na menü");
                     string option = Console.ReadLine();
-                    if (option == "a")
-                        break;
-                    else if (option == "s")
+                    switch (option)
                     {
-                        Console.Clear();
-                        continue;
+                        case "a":
+                            return;
+                        case "s":
+                            Console.Clear();
+                            continue;
+                        case "d":
+                            DailyUpdate(g);
+                            return;
+                        case "si":
+                            DailyRemoveById(g.Id);
+                            return;
+                        default:
+                            return;
                     }
-                    else
-                        break;
 
                 } 
                 // Kayıtları veritabanından çekme işlemi buradan yapıyorum.
 
                 // Örnek kayıt listesi:
               Thread.Sleep(3000);
+            }
+            static void DailyRemoveById(int id)
+            {
+                if (GunlukController.RemoveById(id))
+                {
+                    Console.WriteLine("Günlük Başarılı ile silindi.");
+                }
+                else
+                {
+                    Console.WriteLine("Günlük silinirken bir hata oluştu lütfen yeniden deneyiniz.");
+                }
+                Thread.Sleep(1000);
+            }
+            static void DailyUpdate(Gunluk gunluk)
+            {
+                Console.Write($"\"{gunluk.Name}\" Günlük düzenlemek için yazınız: ");
+                gunluk.Name = Console.ReadLine();
+                if (GunlukController.Update(gunluk))
+                {
+                    Console.WriteLine("Günlük Başarılı ile düzenlendi.");
+                }
+                else
+                {
+                    Console.WriteLine("Günlük düzenlenirken bir hata oluştu lütfen yeniden deneyiniz.");
+                }
+                Thread.Sleep(1000);
             }
 
             static void TumKayitlariSil()
