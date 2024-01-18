@@ -68,5 +68,15 @@ namespace Günlük_Uygulaması.Controller
                 return false;
             }
         }
+        public static bool CheckCurrentDateHasDiary()
+        {
+            SqlConnection conn = Db.Conn();
+            SqlCommand cmd = new SqlCommand("SELECT TOP(1) Id FROM Gunlukler WHERE YEAR(DateCreated)=YEAR(GETDATE()) AND MONTH(DateCreated)=MONTH(GETDATE()) AND DAY(DateCreated) = DAY(GETDATE())", conn);
+            conn.Open();
+            int affectedRows = cmd.ExecuteScalar() == null ? 0 : (int)cmd.ExecuteScalar();
+            conn.Close();
+
+            return affectedRows > 0;
+        }
     }
 }

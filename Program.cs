@@ -49,18 +49,26 @@ namespace Günlük_Uygulaması
 
             static void YeniKayitEkle()
             {
-                Console.Write("Günlük kaydınızı girin: ");
-                string yeniKayit = Console.ReadLine();
+                if (!GunlukController.CheckCurrentDateHasDiary())
+                {
+                    Console.Write("Günlük kaydınızı girin: ");
+                    string yeniKayit = Console.ReadLine();
 
-                // Tarih ve saati eklemesini buradan yaptım.
+                    // Tarih ve saati eklemesini buradan yaptım.
 
-                Gunluk gunluk = new Gunluk();
-                gunluk.Name = yeniKayit;
+                    Gunluk gunluk = new Gunluk();
+                    gunluk.Name = yeniKayit;
 
-                // Veritabanına kaydetme işlemi buradan yapıyorum.
-                GunlukController.Add(gunluk);
-                Console.WriteLine("Yeni kayıt eklendi!");
-                Console.ReadLine();
+                    // Veritabanına kaydetme işlemi buradan yapıyorum.
+                    GunlukController.Add(gunluk);
+                    Console.WriteLine("Yeni kayıt eklendi!");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine("Daha günlük eklemesi yapıldı");
+                    Thread.Sleep(1000);
+                }
             }
 
             static void KayitlariListele()
@@ -72,7 +80,18 @@ namespace Günlük_Uygulaması
 
 
                     Console.WriteLine($"{g.DateCreated.ToString("dd MMMM yyyy")}\n {g.Name}"
-                        + "\n-------------");
+                        + "\n-------------");// 
+                    Console.WriteLine("(s)onraki kayıt | (a)na menü");
+                    string option = Console.ReadLine();
+                    if (option == "a")
+                        break;
+                    else if (option == "s")
+                    {
+                        Console.Clear();
+                        continue;
+                    }
+                    else
+                        break;
 
                 } 
                 // Kayıtları veritabanından çekme işlemi buradan yapıyorum.
