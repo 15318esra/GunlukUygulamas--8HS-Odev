@@ -23,7 +23,8 @@ namespace Günlük_Uygulaması
                         Console.WriteLine("1. Yeni Kayıt Ekle");
                         Console.WriteLine("2. Kayıtları Listele");
                         Console.WriteLine("3. Tüm Kayıtları Sil");
-                        Console.WriteLine("4. Çıkış Yap");
+                        Console.WriteLine("4. Kayıt Ara");
+                        Console.WriteLine("5. Çıkış Yap");
 
                         Console.Write("Lütfen bir seçenek girin (1-4): ");
                         string secim = Console.ReadLine();
@@ -40,6 +41,9 @@ namespace Günlük_Uygulaması
                                 TumKayitlariSil();
                                 break;
                             case "4":
+                                KayitAra();
+                                break;
+                            case "5":
                                 Console.WriteLine("Çıkış yapılıyor...");
                                 return;
                             default:
@@ -75,6 +79,21 @@ namespace Günlük_Uygulaması
                     Thread.Sleep(1000);
                     Console.Clear();
                 }
+            }
+            static void KayitAra()
+            {
+                Console.WriteLine("============ Günlük Ara ============");
+                Console.Write("Tarih Giriniz: ");
+                DateTime tarih = DateTime.Parse(Console.ReadLine());
+
+                List<Gunluk> gunlukler = GunlukController.GunlukArama(tarih);
+                foreach (Gunluk gunluk in gunlukler)
+                {
+                    Console.WriteLine(gunluk.DateCreated.ToString("dd MMMM yyyy"));
+                    Console.WriteLine(gunluk.Name);
+                    Console.WriteLine("---------------------");
+                }
+                Thread.Sleep(2000);
             }
 
             static void YeniKayitEkle()
