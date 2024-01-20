@@ -71,7 +71,7 @@ namespace Günlük_Uygulaması
                     Console.Write("Şifre: ");
                     user.Password = Console.ReadLine();
 
-                    _isLogin = KullaniciController.Login(user);
+                    _isLogin = KullaniciController.AddUser(user);
                 }
                 else
                 {

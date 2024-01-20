@@ -1,4 +1,5 @@
 ﻿using Günlük_Uygulaması.Models;
+using Günlük_Uygulaması.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,17 +11,32 @@ namespace Günlük_Uygulaması.Controller
 {
     public class KullaniciController
     {
-        public static bool Login(Kullanici user)
-        {
-            SqlConnection conn = Db.Conn();
-            SqlCommand cmd = new SqlCommand("SELECT Username, Password FROM Users WHERE Username=@username AND Password=@password", conn);
-            cmd.Parameters.AddWithValue("username", user.Username);
-            cmd.Parameters.AddWithValue("password", user.Password);
+        // Diğer metotlar...
 
-            conn.Open();
-            object loginUser = cmd.ExecuteScalar();
-            conn.Close();
-            return loginUser != null;
+        public static bool AddUser(Kullanici user)
+        {
+            using (SqlConnection conn = Db.Conn())
+            {
+                conn.Open();
+
+                
+                SqlCommand addUserCmd = new SqlCommand("INSERT INTO Users (Username, Password) VALUES (@username, @password)", conn);
+                addUserCmd.Parameters.AddWithValue("username", user.Username);
+                addUserCmd.Parameters.AddWithValue("password", Helper.Base64Encode(user.Password));
+
+                try
+                {
+                    addUserCmd.ExecuteNonQuery();
+                    return true; 
+                   
+                }
+                catch (SqlException)
+                {
+                    return false; 
+
+                    
+                }
+            }
         }
     }
 }
